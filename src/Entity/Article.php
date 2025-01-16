@@ -6,9 +6,14 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ArticleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['article:read']],
+    denormalizationContext: ['groups' => ['article:write']],
+)]
+#[ORM\HasLifecycleCallbacks]
 class Article
 {
     #[ORM\Id]
@@ -16,27 +21,40 @@ class Article
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['article:read', 'article:write'])]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
+    #[Groups(['article:read', 'article:write'])]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
+    #[Groups(['article:read', 'article:write'])]
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
+    #[Groups(['article:read'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[Groups(['article:read'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $changedAt = null;
 
+    #[Groups(['article:read', 'article:write'])]
     #[ORM\Column]
-    private ?bool $isPublished = null;
+    private ?bool $isPublished = false;
 
+    #[Groups(['article:read', 'article:write'])]
     #[ORM\ManyToOne(inversedBy: 'article')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->changedAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -84,26 +102,18 @@ class Article
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
     public function getChangedAt(): ?\DateTimeImmutable
     {
         return $this->changedAt;
     }
 
-    public function setChangedAt(\DateTimeImmutable $changedAt): static
+    #[ORM\PreUpdate()]
+    public function setChangedAt(): void
     {
-        $this->changedAt = $changedAt;
-
-        return $this;
+        $this->changedAt = new \DateTimeImmutable();
     }
 
-    public function isPublished(): ?bool
+    public function getIsPublished(): ?bool
     {
         return $this->isPublished;
     }
