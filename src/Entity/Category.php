@@ -7,9 +7,13 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['category:read']],
+    denormalizationContext: ['groups' => ['category:write']],
+)]
 class Category
 {
     #[ORM\Id]
@@ -17,12 +21,14 @@ class Category
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['category:read', 'category:write'])]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
     /**
      * @var Collection<int, Article>
      */
+    #[Groups(['category:read'])]
     #[ORM\OneToMany(targetEntity: Article::class, mappedBy: 'category')]
     private Collection $article;
 

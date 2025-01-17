@@ -7,6 +7,10 @@ use App\Repository\ArticleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Valid;
+use function Symfony\Component\String\u;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 #[ApiResource(
@@ -21,33 +25,41 @@ class Article
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['article:read', 'article:write'])]
+
     #[ORM\Column(length: 255)]
+    #[Groups(['article:read', 'article:write'])]
+    #[NotBlank(message: 'Это поле не может быть пустым')]
+    #[Length(max: 255, maxMessage: 'Максимум - 255 символов')]
     private ?string $title = null;
 
-    #[Groups(['article:read', 'article:write'])]
+
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['article:read', 'article:write'])]
     private ?string $content = null;
 
-    #[Groups(['article:read', 'article:write'])]
+
     #[ORM\Column(length: 255)]
+    #[Groups(['article:read', 'article:write'])]
     private ?string $image = null;
 
-    #[Groups(['article:read'])]
+
     #[ORM\Column]
+    #[Groups(['article:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[Groups(['article:read'])]
+
     #[ORM\Column]
+    #[Groups(['article:read'])]
     private ?\DateTimeImmutable $changedAt = null;
 
     #[Groups(['article:read', 'article:write'])]
     #[ORM\Column]
     private ?bool $isPublished = false;
 
-    #[Groups(['article:read', 'article:write'])]
+
     #[ORM\ManyToOne(inversedBy: 'article')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['article:read', 'article:write'])]
     private ?Category $category = null;
 
     public function __construct()
@@ -76,6 +88,12 @@ class Article
     public function getContent(): ?string
     {
         return $this->content;
+    }
+
+    #[Groups(['article:read'])]
+    public function getShortContent(): ?string
+    {
+        return u($this->content)->truncate(60, '...');
     }
 
     public function setContent(string $content): static
