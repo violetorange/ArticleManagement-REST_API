@@ -2,22 +2,32 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\Repository\ArticleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Valid;
 use function Symfony\Component\String\u;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => ['article:read']],
     denormalizationContext: ['groups' => ['article:write']],
+    paginationClientEnabled: true,
+    paginationClientItemsPerPage: true
 )]
 #[ORM\HasLifecycleCallbacks]
+#[ApiFilter(PropertyFilter::class)]
+#[ApiFilter(DateFilter::class, properties: ['createdAt', 'changedAt'])]
+#[ApiFilter(SearchFilter::class, properties: ['category.title' => 'partial'])]
+#[ApiFilter(BooleanFilter::class, properties: ['isPublished'])]
 class Article
 {
     #[ORM\Id]
@@ -25,28 +35,25 @@ class Article
     #[ORM\Column]
     private ?int $id = null;
 
-
     #[ORM\Column(length: 255)]
     #[Groups(['article:read', 'article:write'])]
     #[NotBlank(message: 'Это поле не может быть пустым')]
     #[Length(max: 255, maxMessage: 'Максимум - 255 символов')]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $title = null;
-
 
     #[ORM\Column(type: Types::TEXT)]
     #[Groups(['article:read', 'article:write'])]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $content = null;
-
 
     #[ORM\Column(length: 255)]
     #[Groups(['article:read', 'article:write'])]
     private ?string $image = null;
 
-
     #[ORM\Column]
     #[Groups(['article:read'])]
     private ?\DateTimeImmutable $createdAt = null;
-
 
     #[ORM\Column]
     #[Groups(['article:read'])]
@@ -55,7 +62,6 @@ class Article
     #[Groups(['article:read', 'article:write'])]
     #[ORM\Column]
     private ?bool $isPublished = false;
-
 
     #[ORM\ManyToOne(inversedBy: 'article')]
     #[ORM\JoinColumn(nullable: false)]
