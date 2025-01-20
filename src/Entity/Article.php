@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -20,14 +21,16 @@ use function Symfony\Component\String\u;
 #[ApiResource(
     normalizationContext: ['groups' => ['article:read']],
     denormalizationContext: ['groups' => ['article:write']],
+    order: ['id' => 'DESC'],
     paginationClientEnabled: true,
-    paginationClientItemsPerPage: true
+    paginationClientItemsPerPage: true,
 )]
 #[ORM\HasLifecycleCallbacks]
 #[ApiFilter(PropertyFilter::class)]
 #[ApiFilter(DateFilter::class, properties: ['createdAt', 'changedAt'])]
 #[ApiFilter(SearchFilter::class, properties: ['category.title' => 'partial'])]
 #[ApiFilter(BooleanFilter::class, properties: ['isPublished'])]
+#[ApiFilter(OrderFilter::class, properties: ['title', 'createdAt', 'changedAt', 'category.title', 'isPublished'])]
 class Article
 {
     #[ORM\Id]

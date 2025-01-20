@@ -1,5 +1,5 @@
 import { HydraAdmin, ResourceGuesser } from '@api-platform/admin';
-import { List, Datagrid, TextField, ReferenceField, DateField, EditButton, BooleanField, Pagination, TextInput, DateInput, BooleanInput  } from 'react-admin';
+import { List, Datagrid, TextField, DateField, EditButton, BooleanField, Pagination, TextInput, DateInput, BooleanInput  } from 'react-admin';
 
 import React from 'react';
 
@@ -27,13 +27,11 @@ export const ArticlesList = (props) => (
     <List {...props} pagination={<PostPagination />} filters={ArticleFilters} >
         <Datagrid>
             <TextField source="title" label="Название" />
-            <TextField source="shortContent" label="Текст" />
-            <TextField source="image" label="Изображение"/>
-            <DateField source="createdAt" label="Создано"/>
-            <DateField source="changedAt" label="Изменено"/>
-            <ReferenceField source="category" reference="categories" label="Категория">
-                <TextField source="title"/>
-            </ReferenceField>
+            <TextField source="shortContent" label="Текст" sortable={false} />
+            <TextField source="image" label="Изображение" sortable={false} />
+            <DateField source="createdAt" label="Создано" />
+            <DateField source="changedAt" label="Изменено" />
+            <TextField label="Категория" source="category.title" name="category.title" />
             <BooleanField  source="isPublished" label="Опубликовано" />
             <EditButton />
         </Datagrid>

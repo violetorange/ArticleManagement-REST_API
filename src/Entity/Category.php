@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -16,11 +17,13 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ApiResource(
     normalizationContext: ['groups' => ['category:read']],
     denormalizationContext: ['groups' => ['category:write']],
+    order: ['id' => 'DESC'],
     paginationClientEnabled: true,
-    paginationClientItemsPerPage: true
+    paginationClientItemsPerPage: true,
 )]
 #[ApiFilter(PropertyFilter::class)]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'partial'])]
+#[ApiFilter(OrderFilter::class, properties: ['title'])]
 class Category
 {
     #[ORM\Id]
@@ -28,7 +31,7 @@ class Category
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['category:read', 'category:write'])]
+    #[Groups(['category:read', 'category:write', 'article:read'])]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
