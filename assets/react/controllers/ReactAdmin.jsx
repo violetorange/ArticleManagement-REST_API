@@ -7,12 +7,12 @@ import {
     EditButton,
     BooleanField,
     ReferenceField,
-    ReferenceOneField,
     Pagination,
     TextInput,
     DateInput,
     BooleanInput,
-    ReferenceInput
+    ReferenceInput,
+    SelectInput
 } from 'react-admin';
 
 import React from 'react';
@@ -70,7 +70,9 @@ export const ArticlesCreate = (props) => (
         <TextInput label="Текст" source="content" name="content" />
         <TextInput label="Изображение" source="image" name="image" />
         <BooleanInput label="Опубликовано" source="isPublished" name="isPublished" />
-        <ReferenceInput source="category" reference="categories" name="category" />
+        <ReferenceInput source="category" reference="categories" name="category">
+            <SelectInput label="Категория" optionText="title" />
+        </ReferenceInput>
     </CreateGuesser>
 );
 
@@ -87,7 +89,9 @@ export const ArticlesEdit = (props) => (
         <TextInput label="Текст" source="content" name="content" />
         <TextInput label="Изображение" source="image" name="image" />
         <BooleanInput label="Опубилковано" source="isPublished" name="isPublished" />
-        <ReferenceInput source="category" reference="categories" name="category" />
+        <ReferenceInput source="category" reference="categories" name="category">
+            <SelectInput label="Категория" optionText="title" />
+        </ReferenceInput>
     </EditGuesser>
 );
 
@@ -97,6 +101,7 @@ export const CategoriesEdit = (props) => (
     </EditGuesser>
 );
 
+// Show result
 export default (props) => (
     <HydraAdmin entrypoint={props.entrypoint}>
         <ResourceGuesser name="articles" list={ArticlesList} create={ArticlesCreate} edit={ArticlesEdit} />
