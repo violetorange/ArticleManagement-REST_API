@@ -74,6 +74,12 @@ export const ArticlesCreate = (props) => (
     </CreateGuesser>
 );
 
+export const CategoriesCreate = (props) => (
+    <CreateGuesser {...props}>
+        <TextInput label="Название" source="title" name="title" />
+    </CreateGuesser>
+);
+
 // EDIT
 export const ArticlesEdit = (props) => (
     <EditGuesser {...props}>
@@ -94,6 +100,6 @@ export const CategoriesEdit = (props) => (
 export default (props) => (
     <HydraAdmin entrypoint={props.entrypoint}>
         <ResourceGuesser name="articles" list={ArticlesList} create={ArticlesCreate} edit={ArticlesEdit} />
-        <ResourceGuesser name="categories" list={CategoriesList} edit={CategoriesEdit} />
+        <ResourceGuesser name="categories" list={CategoriesList} create={CategoriesCreate} edit={CategoriesEdit} />
     </HydraAdmin>
 );
