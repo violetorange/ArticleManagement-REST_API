@@ -12,7 +12,9 @@ import {
     DateInput,
     BooleanInput,
     ReferenceInput,
-    SelectInput
+    SelectInput,
+    ImageInput,
+    ImageField
 } from 'react-admin';
 
 import React from 'react';
@@ -42,7 +44,7 @@ export const ArticlesList = (props) => (
         <Datagrid>
             <TextField source="title" label="Название" />
             <TextField source="shortContent" label="Текст" sortable={false} />
-            <TextField source="image" label="Изображение" sortable={false} />
+            <ImageField source="imageUrl" label="Изображение" sortable={false} />
             <DateField source="createdAt" label="Создано" />
             <DateField source="changedAt" label="Изменено" />
             <ReferenceField source="category" reference="categories" label="Категория" sortBy="category.title">
@@ -68,7 +70,14 @@ export const ArticlesCreate = (props) => (
     <CreateGuesser {...props}>
         <TextInput label="Название" source="title" name="title" />
         <TextInput label="Текст" source="content" name="content" />
-        <TextInput label="Изображение" source="image" name="image" />
+        <ImageInput
+            source="imageFile"
+            label="Изображение"
+            accept={{ 'image/*': ['.png', '.jpg'] }}
+            placeholder={<p>Прикрепите изображение для статьи (jpg, png)</p>}
+        >
+            <ImageField source="src" title="title" />
+        </ImageInput>
         <BooleanInput label="Опубликовано" source="isPublished" name="isPublished" />
         <ReferenceInput source="category" reference="categories" name="category">
             <SelectInput label="Категория" optionText="title" />
@@ -87,9 +96,8 @@ export const ArticlesEdit = (props) => (
     <EditGuesser {...props}>
         <TextInput label="Название" source="title" name="title" />
         <TextInput label="Текст" source="content" name="content" />
-        <TextInput label="Изображение" source="image" name="image" />
         <BooleanInput label="Опубилковано" source="isPublished" name="isPublished" />
-        <ReferenceInput source="category" reference="categories" name="category">
+        <ReferenceInput source="category" reference="categories" name="category" >
             <SelectInput label="Категория" optionText="title" />
         </ReferenceInput>
     </EditGuesser>
