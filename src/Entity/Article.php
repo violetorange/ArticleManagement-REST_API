@@ -187,9 +187,13 @@ class Article
         return $this->isPublished;
     }
 
-    public function setIsPublished(bool $isPublished): static
+    public function setIsPublished(bool|string $isPublished): static
     {
-        $this->isPublished = $isPublished;
+        if (is_string($isPublished)) {
+            $this->isPublished = 'true' === $isPublished; // исправление проблемы POST-запроса (multipart/form-data преобразует булевые значения в строки)
+        } else {
+            $this->isPublished = $isPublished;
+        }
 
         return $this;
     }
