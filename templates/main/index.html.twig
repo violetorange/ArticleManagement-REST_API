@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block body %}
+    <div {{ react_component('MainPage', {
+        entrypoint: path('api_entrypoint')
+    }) }}></div>
+{% endblock %}
