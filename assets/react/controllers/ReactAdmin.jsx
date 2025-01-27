@@ -16,7 +16,7 @@ import {
     ImageInput,
     ImageField
 } from 'react-admin';
-
+import { RichTextInput } from 'ra-input-rich-text';
 import React from 'react';
 
 // Pagination
@@ -69,7 +69,7 @@ export const CategoriesList = (props) => (
 export const ArticlesCreate = (props) => (
     <CreateGuesser {...props}>
         <TextInput label="Название" source="title" name="title" />
-        <TextInput label="Текст" source="content" name="content" />
+        <RichTextInput label="Текст" source="content" name="content" />
         <ImageInput
             source="imageFile"
             label="Изображение"
@@ -95,7 +95,7 @@ export const CategoriesCreate = (props) => (
 export const ArticlesEdit = (props) => (
     <EditGuesser {...props}>
         <TextInput label="Название" source="title" name="title" />
-        <TextInput label="Текст" source="content" name="content" />
+        <RichTextInput label="Текст" source="content" name="content" />
         <BooleanInput label="Опубилковано" source="isPublished" name="isPublished" />
         <ReferenceInput source="category" reference="categories" name="category" >
             <SelectInput label="Категория" optionText="title" />
