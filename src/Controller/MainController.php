@@ -13,4 +13,10 @@ class MainController extends AbstractController
     {
         return $this->render('main/index.html.twig', []);
     }
+
+    #[Route('/articles/{articleId}', name: 'app_articles')]
+    public function articleItem($articleId): Response
+    {
+        return $this->render('main/article-item.html.twig', ['articleId' => $articleId]);
+    }
 }

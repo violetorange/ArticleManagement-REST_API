@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Статья{% endblock %}
+
+{% block body %}
+    <div {{ react_component('ArticleItem', {
+        entrypoint: path('api_entrypoint'),
+        articleId: articleId
+    }) }}></div>
+{% endblock %}

@@ -39,36 +39,38 @@ export default function MainArticlesList() {
     if (error) {
         return <div>Упс! Что-то пошло не так</div>
     }
-
+console.log(articles);
     return (
         <div>
             <Grid container justifyContent="center">
                 <Grid container item xs={12} sm={8} md={6} spacing={3} justifyContent="center">
                     {articles.map((article) => (
                         <Grid item xs={12} sm={4} md={4} key={article["@id"]}>
-                            <Card
-                                style={{ width: '300px' }}
-                                sx={{
-                                    width: '300px',
-                                    transition: 'transform 0.3s, box-shadow 0.3s',
-                                    '&:hover': {
-                                        transform: 'scale(1.05)', // Увеличение карточки при наведении
-                                        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)', // Добавление тени
-                                    }
-                                }}
-                            >
-                                <CardMedia
-                                    component="img"
-                                    height="200"
-                                    image={article.imageUrl}
-                                    alt={article.title}
-                                />
-                                <CardContent>
-                                    <Typography gutterBottom variant="h6">
-                                        {article.title}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
+                            <a href={`/articles/${article.id}`} style={{ textDecoration: 'none' }}>
+                                <Card
+                                    style={{ width: '300px' }}
+                                    sx={{
+                                        width: '300px',
+                                        transition: 'transform 0.3s, box-shadow 0.3s',
+                                        '&:hover': {
+                                            transform: 'scale(1.05)', // Увеличение карточки при наведении
+                                            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)', // Добавление тени
+                                        }
+                                    }}
+                                >
+                                    <CardMedia
+                                        component="img"
+                                        height="200"
+                                        image={article.imageUrl}
+                                        alt={article.title}
+                                    />
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h6">
+                                            {article.title}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </a>
                         </Grid>
                     ))}
                 </Grid>
