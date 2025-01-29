@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Grid, Card, CardContent, CardMedia, Typography, Pagination } from '@mui/material';
 
 export default function MainArticlesList() {
@@ -43,9 +43,9 @@ export default function MainArticlesList() {
     return (
         <div>
             <Grid container justifyContent="center">
-                <Grid container item xs={12} sm={8} md={6} spacing={3} justifyContent="center">
+                <Grid container item xl={6} spacing={3} justifyContent="center">
                     {articles.map((article) => (
-                        <Grid item xs={12} sm={4} md={4} key={article["@id"]}>
+                        <Grid item xl={4} key={article["@id"]}>
                             <a href={`/articles/${article.id}`} style={{ textDecoration: 'none' }}>
                                 <Card
                                     style={{ width: '300px' }}
@@ -64,7 +64,7 @@ export default function MainArticlesList() {
                                         image={article.imageUrl}
                                         alt={article.title}
                                     />
-                                    <CardContent style={{ padding: 0 }}>
+                                    <CardContent style={{ padding: 0, marginLeft: "10px" }}>
                                         <Typography gutterBottom variant="h6">
                                             {article.title}
                                         </Typography>
