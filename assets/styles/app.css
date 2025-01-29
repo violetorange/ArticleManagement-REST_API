@@ -1,3 +1,7 @@
 body {
     background-color: #DCEAF3;
 }
+
+#articleImage {
+    max-height: 300px;
+}

@@ -39,7 +39,7 @@ export default function MainArticlesList() {
     if (error) {
         return <div>Упс! Что-то пошло не так</div>
     }
-console.log(articles);
+
     return (
         <div>
             <Grid container justifyContent="center">
@@ -64,11 +64,12 @@ console.log(articles);
                                         image={article.imageUrl}
                                         alt={article.title}
                                     />
-                                    <CardContent>
+                                    <CardContent style={{ padding: 0 }}>
                                         <Typography gutterBottom variant="h6">
                                             {article.title}
                                         </Typography>
                                     </CardContent>
+                                    <i>{article.formattedCreatedAt}</i>
                                 </Card>
                             </a>
                         </Grid>

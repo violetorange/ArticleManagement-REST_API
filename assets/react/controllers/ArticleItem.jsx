@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { Grid, Card, CardContent, CardMedia, Typography, Pagination } from '@mui/material';
+import { Button } from '@mui/material';
 
 export default function ArticleItem({ articleId }) {
     const [article, setArticle] = useState([]);
@@ -33,6 +33,18 @@ export default function ArticleItem({ articleId }) {
     }
 
     return (
-        <div>Статья: {article.title}</div>
+        <div>
+            <h1>{article.title}</h1>
+            <i>{article.formattedCreatedAt}</i>
+            <br/>
+            <br/>
+            <img id="articleImage" src={article.imageUrl} alt=""/>
+            <br/>
+            <br/>
+            <div dangerouslySetInnerHTML={{__html: article.content}}></div>
+            <Button variant="contained" href="/">
+                На главную
+            </Button>
+        </div>
     );
 }

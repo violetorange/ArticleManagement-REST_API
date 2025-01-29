@@ -172,6 +172,12 @@ class Article
         return $this->createdAt;
     }
 
+    #[Groups(['article:read'])]
+    public function getFormattedCreatedAt(): string
+    {
+        return $this->createdAt->format('Y-m-d H:i');
+    }
+
     public function getChangedAt(): ?\DateTimeImmutable
     {
         return $this->changedAt;
