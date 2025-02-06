@@ -137,8 +137,8 @@ export const CategoriesEdit = (props) => (
 // Show result
 export default (props) => (
     <HydraAdmin entrypoint={props.entrypoint}>
-        <ResourceGuesser name="articles" list={ArticlesList} create={ArticlesCreate} edit={ArticlesEdit} />
-        <ResourceGuesser name="categories" list={CategoriesList} create={CategoriesCreate} edit={CategoriesEdit} />
-        <ResourceGuesser name="api_tokens" list={TokensList} show={TokenShow} />
+        <ResourceGuesser name="articles" list={ArticlesList} create={ArticlesCreate} edit={ArticlesEdit} options={{ label: 'Статьи' }} />
+        <ResourceGuesser name="categories" list={CategoriesList} create={CategoriesCreate} edit={CategoriesEdit} options={{ label: 'Категории' }} />
+        <ResourceGuesser name="api_tokens" list={TokensList} show={TokenShow} options={{ label: 'Токен' }} />
     </HydraAdmin>
 );
