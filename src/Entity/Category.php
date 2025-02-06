@@ -22,10 +22,16 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ApiResource(
     operations: [
         new Get(),
-        new Post(),
+        new Post(
+            security: 'is_granted("ROLE_ADMIN")'
+        ),
         new GetCollection(),
-        new Delete(),
-        new Patch(),
+        new Delete(
+            security: 'is_granted("ROLE_ADMIN")'
+        ),
+        new Patch(
+            security: 'is_granted("ROLE_ADMIN")'
+        ),
     ],
     normalizationContext: ['groups' => ['category:read']],
     denormalizationContext: ['groups' => ['category:write']],
@@ -51,7 +57,7 @@ class Category
      * @var Collection<int, Article>
      */
     #[Groups(['category:read'])]
-    #[ORM\OneToMany(targetEntity: Article::class, mappedBy: 'category')]
+    #[ORM\OneToMany(targetEntity: Article::class, mappedBy: 'category', cascade: ['remove'])]
     private Collection $article;
 
     public function __construct()
