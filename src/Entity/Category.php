@@ -21,13 +21,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ApiResource(
     operations: [
-        new Get(
-            formats: ['jsonld']
-        ),
+        new Get(),
         new Post(),
-        new GetCollection(
-            formats: ['jsonld']
-        ),
+        new GetCollection(),
         new Delete(),
         new Patch(),
     ],

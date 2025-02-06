@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Grid, Card, CardContent, CardMedia, Typography, Pagination } from '@mui/material';
+import { Grid, Card, CardContent, CardMedia, Typography, Pagination, CircularProgress } from '@mui/material';
 
 export default function MainArticlesList() {
     const [articles, setArticles] = useState([]);
@@ -33,7 +33,7 @@ export default function MainArticlesList() {
     };
 
     if (loading) {
-        return <div>Загрузка...</div>;
+        return <CircularProgress />;
     }
 
     if (error) {

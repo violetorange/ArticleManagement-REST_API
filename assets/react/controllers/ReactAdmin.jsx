@@ -14,7 +14,9 @@ import {
     ReferenceInput,
     SelectInput,
     ImageInput,
-    ImageField
+    ImageField,
+    FunctionField,
+    required
 } from 'react-admin';
 import { RichTextInput } from 'ra-input-rich-text';
 import React from 'react';
@@ -37,6 +39,11 @@ const ArticlesFilters = [
 const CategoriesFilters = [
     <TextInput label="Название" source="title" name="title" />
 ];
+
+// Валидация при редактировании
+const validateField = (value) => {
+    return value ? undefined : 'Это поле обязательно для заполнения';
+};
 
 // LIST
 export const ArticlesList = (props) => (
@@ -65,6 +72,23 @@ export const CategoriesList = (props) => (
     </List>
 );
 
+export const TokensList = (props) => (
+    <List {...props} pagination={<PostPagination />} actions={null}>
+        <Datagrid>
+            <FunctionField label="Токен" source="token" render={record => `Bearer ${record.token}`} />
+        </Datagrid>
+    </List>
+);
+
+// SHOW
+export const TokenShow = (props) => (
+    <List {...props} pagination={<PostPagination />} actions={null}>
+        <Datagrid>
+            <FunctionField label="Токен" source="token" render={record => `Bearer ${record.token}`} />
+        </Datagrid>
+    </List>
+);
+
 // CREATE
 export const ArticlesCreate = (props) => (
     <CreateGuesser {...props}>
@@ -75,6 +99,7 @@ export const ArticlesCreate = (props) => (
             label="Изображение"
             accept={{ 'image/*': ['.png', '.jpg'] }}
             placeholder={<p>Прикрепите изображение для статьи (jpg, png)</p>}
+            validate={required()}
         >
             <ImageField source="src" title="title" />
         </ImageInput>
@@ -94,18 +119,18 @@ export const CategoriesCreate = (props) => (
 // EDIT
 export const ArticlesEdit = (props) => (
     <EditGuesser {...props}>
-        <TextInput label="Название" source="title" name="title" />
-        <RichTextInput label="Текст" source="content" name="content" />
+        <TextInput label="Название" source="title" name="title" defaultValue="TEST" validate={validateField} />
+        <RichTextInput label="Текст" source="content" name="content" validate={validateField} />
         <BooleanInput label="Опубилковано" source="isPublished" name="isPublished" />
         <ReferenceInput source="category" reference="categories" name="category" >
-            <SelectInput label="Категория" optionText="title" />
+            <SelectInput label="Категория" optionText="title" validate={validateField} />
         </ReferenceInput>
     </EditGuesser>
 );
 
 export const CategoriesEdit = (props) => (
     <EditGuesser {...props}>
-        <TextInput label="Название" source="title" name="title" />
+        <TextInput label="Название" source="title" name="title" validate={validateField} />
     </EditGuesser>
 );
 
@@ -114,5 +139,6 @@ export default (props) => (
     <HydraAdmin entrypoint={props.entrypoint}>
         <ResourceGuesser name="articles" list={ArticlesList} create={ArticlesCreate} edit={ArticlesEdit} />
         <ResourceGuesser name="categories" list={CategoriesList} create={CategoriesCreate} edit={CategoriesEdit} />
+        <ResourceGuesser name="api_tokens" list={TokensList} show={TokenShow} />
     </HydraAdmin>
 );

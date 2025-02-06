@@ -33,8 +33,12 @@ use function Symfony\Component\String\u;
             denormalizationContext: ['groups' => ['article:create'], 'disable_type_enforcement' => true],
         ),
         new GetCollection(),
-        new Delete(),
-        new Patch(),
+        new Delete(
+            security: 'is_granted("ROLE_ADMIN")',
+        ),
+        new Patch(
+            security: 'is_granted("ROLE_ADMIN")',
+        ),
     ],
     normalizationContext: ['groups' => ['article:read']],
     denormalizationContext: ['groups' => ['article:write']],
@@ -59,14 +63,15 @@ class Article
 
     #[ORM\Column(length: 255)]
     #[Groups(['article:read', 'article:write', 'article:create'])]
-    #[NotBlank(message: 'Это поле не может быть пустым')]
-    #[Length(max: 255, maxMessage: 'Максимум - 255 символов')]
+    #[NotBlank(message: 'Название не может быть пустым')]
+    #[Length(min: 2, max: 255, minMessage: 'Минимум - 2 символа', maxMessage: 'Максимум - 255 символов')]
     #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Groups(['article:read', 'article:write', 'article:create'])]
     #[ApiFilter(SearchFilter::class, strategy: 'partial')]
+    #[NotBlank(message: 'Статья не может быть пустой')]
     private ?string $content = null;
 
     #[Vich\UploadableField(mapping: 'article', fileNameProperty: 'image')]
@@ -92,6 +97,7 @@ class Article
     #[ORM\ManyToOne(inversedBy: 'article')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['article:read', 'article:write', 'article:create'])]
+    #[NotBlank(message: 'Категория не может быть пустой')]
     private ?Category $category = null;
 
     public function __construct()

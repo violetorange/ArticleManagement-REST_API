@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Авторизация{% endblock %}
+
+{% block body %}
+    <div {{ react_component('LoginPage', {
+        entrypoint: path('api_entrypoint'),
+        user: userData
+    }) }}></div>
+{% endblock %}
