@@ -24,7 +24,7 @@ symfony serve
 2. БД:
 ```
 docker-compose up -d
-symfony concole doctrine:migrations:migrate
+symfony console doctrine:migrations:migrate
 symfony console doctrine:fixtures:load
 ```
 
